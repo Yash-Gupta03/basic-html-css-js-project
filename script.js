@@ -1,41 +1,49 @@
-let form = document.getElementById("expense-form");
-form.addEventListener("submit", savedata);
-
+// Function invoked after the form is submitted
 function savedata(e) {
   e.preventDefault();
   let price = document.getElementById("price").value;
   let description = document.getElementById("description").value;
   let category = document.getElementById("category").value;
 
+  // Making values in the form null after submitting the form
+  document.getElementById("price").value = null;
+  document.getElementById("description").value = null;
+  document.getElementById("category").value = null;
+
+  // Creating object of the data
   const obj = {
     price: price,
     description: description,
     category: category,
   };
+  // Storing object to local storage
   localStorage.setItem(obj.price, JSON.stringify(obj));
 
-  let newElement = document.createElement("li");
-  let newBtn = document.createElement("input");
-  let editBtn = document.createElement("input");
-  newBtn.className = "delete";
-  newBtn.type = "button";
-  newBtn.value = "Delete";
+  let newElement = document.createElement("li"); //Creating list element
+  let deleteBtn = document.createElement("input"); //Creating delete button
+  let editBtn = document.createElement("input"); //Creating edit button
+  deleteBtn.className = "delete";
+  deleteBtn.type = "button";
+  deleteBtn.value = "Delete";
   editBtn.className = "edit";
   editBtn.type = "button";
   editBtn.value = "Edit";
-  data = localStorage.getItem(obj.price);
+  let data = localStorage.getItem(obj.price); //Extracting data from local storage
   newElement.appendChild(document.createTextNode(data));
 
+  //Adding data and button in the list
   let parentEle = document.getElementById("list");
   parentEle.appendChild(newElement);
-  newElement.appendChild(newBtn);
+  newElement.appendChild(deleteBtn);
   newElement.appendChild(editBtn);
 
-  newBtn.onclick = function () {
+  // Delete button function
+  deleteBtn.onclick = function () {
     localStorage.removeItem(obj.price);
     parentEle.removeChild(newElement);
   };
 
+  // Edit button function
   editBtn.onclick = function () {
     localStorage.removeItem(obj.price);
     parentEle.removeChild(newElement);
